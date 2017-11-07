@@ -1,11 +1,11 @@
 {
-  "name": "@toxicable/router",
-  "version": "0.0.2",
+  "name": "@toxicable/git-tools",
+  "version": "0.0.7",
   "license": "MIT",
   "bin": {
-   "tgt": "./dist/index.js"
+   "tgt": "./index.js"
   },
-  "peerDependencies": {
+  "dependencies": {
     "simple-git":"1.80.1"
   }
 }

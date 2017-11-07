@@ -1,12 +1,11 @@
+
 import { rebase } from './rebase';
 
 export default function cli() {
   const args = process.argv.slice(2);
 
   if (args[0] === 'rebase') {
-    const rebaseArgs = transformArgs(args.slice(1));
-
-    rebase(rebaseArgs['commits']);
+    rebase(Number(args[1]));
   }
 }
 

@@ -33,7 +33,6 @@ export class LiteRouterModule {
         LiteRouter,
         Location,
         { provide: LITE_ROUTER_INITIAL_ROUTE, useFactory: browserInitialRouteFactory },
-
         { provide: UrlSerializer, useClass: DefaultUrlSerializer },
         provideRoutes(routes),
         { provide: LITE_ROUTER_ROUTES, useExisting: ROUTES },

@@ -18,21 +18,24 @@ export class LiteRouter {
   private _url = new ReplaySubject<string>();
   url = this._url.asObservable();
 
+  private readonly flatRoutes: LiteRoute[];
+
   constructor(
-    @Inject(LITE_ROUTER_ROUTES) private readonly routes: LiteRoute[],
+    @Inject(LITE_ROUTER_ROUTES) private readonly routes: LiteRoute[][],
     @Inject(LITE_ROUTER_INITIAL_ROUTE) private readonly initalRoute: string,
     private readonly cfr: ComponentFactoryResolver,
     private readonly urlSeralizer: UrlSerializer,
     private readonly location: Location,
   ) {
+    this.flatRoutes = routes.reduce((a, b) => a.concat(b), []);
     this.navigate(initalRoute);
   }
 
   navigate(rawTargetUrl: string) {
     const targetUrl = this.urlSeralizer.parse(rawTargetUrl).toString();
 
-    for (let i = 0; i < this.routes.length; i++) {
-      const route = this.routes[i];
+    for (let i = 0; i < this.flatRoutes.length; i++) {
+      const route = this.flatRoutes[i];
       const configUrl = this.urlSeralizer.parse(route.path).toString();
       const params = this.matcher(targetUrl, configUrl);
       if (params) {

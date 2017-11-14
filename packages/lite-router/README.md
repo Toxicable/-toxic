@@ -10,6 +10,8 @@ just a nice and easy flat layout with easy to access param data
 
 However, it only weighs ~10kb
 
+Demo: https://stackblitz.com/edit/toxicable-lite-router-demo
+
 ## Installation
 
 `yarn add @toxicable/lite-router`

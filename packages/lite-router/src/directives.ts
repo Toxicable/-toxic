@@ -9,7 +9,7 @@ export class LiteRouterLink {
 
   private targetUrl: string;
 
-  @Input() set rlLink(value: string) {
+  @Input() set lrLink(value: string) {
     this.targetUrl = value;
   }
 
@@ -28,7 +28,7 @@ export class LiteRouterLinkWithHref {
 
   private targetUrl: string;
 
-  @Input() set rlLink(value: string) {
+  @Input() set lrLink(value: string) {
     this.targetUrl = value;
     this.href = value;
   }
@@ -51,7 +51,7 @@ export class LiteRouterLinkWithHref {
   }
 }
 
-@Directive({ selector: 'rl-outlet' })
+@Directive({ selector: 'lr-outlet' })
 export class LiteRouterOutlet {
   private currentComponent: ComponentRef<{}>;
   constructor(

@@ -5,8 +5,8 @@
   },
   "apps": [
     {
-      "root": "src",
-      "outDir": "dist",
+      "root": "packages/lite-router/demo",
+      "outDir": "packages/lite-router/demo/dist",
       "assets": [
         "assets",
         "favicon.ico"

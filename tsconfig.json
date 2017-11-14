@@ -11,6 +11,10 @@
     "typeRoots": [
       "node_modules/@types"
     ],
+    "baseUrl": "./",
+    "paths": {
+      "@toxicable/lite-router": ["packages/lite-router/public_api"]
+    },
     "types": [
       "node"
     ],

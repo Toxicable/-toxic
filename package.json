@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "router:build": "ng-packagr -p ./packages/lite-router/ng-package.json",
-    "router:publish": "npm publish ./packages/lite-router/dist --tag next --access=public",
+    "lite-router:build": "ng-packagr -p ./packages/lite-router/ng-package.json",
+    "lite-router:publish": "npm publish ./packages/lite-router/dist --tag next --access=public",
     "git-tools:build": "tsc -p ./packages/git-tools/tsconfig.json && cpy ./packages/git-tools/package.json ./packages/git-tools/dist",
     "git-tools:publish": "npm publish ./packages/git-tools/dist --tag next --access=public"
   },

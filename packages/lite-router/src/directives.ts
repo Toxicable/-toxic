@@ -1,10 +1,10 @@
 import { Directive, Input, HostListener, HostBinding, ComponentRef, ViewContainerRef } from '@angular/core';
-import { RouterLite } from './router';
+import { LiteRouter } from './router';
 
-@Directive({ selector: ':not(a)[rlLink]' })
-export class RouterLiteLink {
+@Directive({ selector: ':not(a)[lrLink]' })
+export class LiteRouterLink {
   constructor(
-    private router: RouterLite
+    private router: LiteRouter
   ) { }
 
   private targetUrl: string;
@@ -20,10 +20,10 @@ export class RouterLiteLink {
   }
 }
 
-@Directive({ selector: 'a[rlLink]' })
-export class RouterLiteLinkWithHref {
+@Directive({ selector: 'a[lrLink]' })
+export class LiteRouterLinkWithHref {
   constructor(
-    private router: RouterLite
+    private router: LiteRouter
   ) { }
 
   private targetUrl: string;
@@ -52,11 +52,11 @@ export class RouterLiteLinkWithHref {
 }
 
 @Directive({ selector: 'rl-outlet' })
-export class RouterLiteOutlet {
+export class LiteRouterOutlet {
   private currentComponent: ComponentRef<{}>;
   constructor(
     private vcr: ViewContainerRef,
-    private router: RouterLite,
+    private router: LiteRouter,
   ) {
     this.router.activateComponent$
       .subscribe(factory => {

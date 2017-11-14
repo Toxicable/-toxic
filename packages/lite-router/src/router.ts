@@ -5,10 +5,10 @@ import { ComponentFactory, Inject, ComponentFactoryResolver, Injectable } from '
 import { UrlSerializer } from '@angular/router';
 import { Location } from '@angular/common';
 import { LiteRoute } from './interfaces';
-import { ROUTER_LITE_ROUTES, ROUTER_LITE_INITIAL_ROUTE } from './tokens';
+import { LITE_ROUTER_ROUTES, LITE_ROUTER_INITIAL_ROUTE } from './tokens';
 
 @Injectable()
-export class RouterLite {
+export class LiteRouter {
   private _activatedComponent$ = new BehaviorSubject<ComponentFactory<{}>>(null);
   activateComponent$ = this._activatedComponent$.asObservable();
 
@@ -19,8 +19,8 @@ export class RouterLite {
   url = this._url.asObservable();
 
   constructor(
-    @Inject(ROUTER_LITE_ROUTES) private readonly routes: LiteRoute[],
-    @Inject(ROUTER_LITE_INITIAL_ROUTE) private readonly initalRoute: string,
+    @Inject(LITE_ROUTER_ROUTES) private readonly routes: LiteRoute[],
+    @Inject(LITE_ROUTER_INITIAL_ROUTE) private readonly initalRoute: string,
     private readonly cfr: ComponentFactoryResolver,
     private readonly urlSeralizer: UrlSerializer,
     private readonly location: Location,

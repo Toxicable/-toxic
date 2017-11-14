@@ -1,10 +1,10 @@
 import { PathLocationStrategy, LocationStrategy, PlatformLocation, APP_BASE_HREF, Location } from '@angular/common';
-import { RouterLiteLinkWithHref, RouterLiteOutlet, RouterLiteLink } from './directives';
+import { LiteRouterLinkWithHref, LiteRouterOutlet, LiteRouterLink } from './directives';
 import { NgModule, ModuleWithProviders, Optional, Inject } from '@angular/core';
 import { LiteRoute } from './interfaces';
-import { RouterLite } from './router';
+import { LiteRouter } from './router';
 import { DefaultUrlSerializer, UrlSerializer } from '@angular/router';
-import { ROUTER_LITE_INITIAL_ROUTE, ROUTER_LITE_ROUTES} from './tokens';
+import { LITE_ROUTER_INITIAL_ROUTE, LITE_ROUTER_ROUTES} from './tokens';
 
 
 export function provideLocationStrategy(
@@ -16,24 +16,24 @@ export function browserInitialRouteFactory() {
 }
 
 const REEXPORTS = [
-  RouterLiteLink,
-  RouterLiteLinkWithHref,
-  RouterLiteOutlet,
+  LiteRouterLink,
+  LiteRouterLinkWithHref,
+  LiteRouterOutlet,
 ];
 
 @NgModule({
   declarations: [REEXPORTS],
   exports: [REEXPORTS]
 })
-export class RouterLiteModule {
+export class LiteRouterModule {
   static withRoutes(routes: LiteRoute[]): ModuleWithProviders {
     return {
-      ngModule: RouterLiteModule,
+      ngModule: LiteRouterModule,
       providers: [
-        RouterLite,
+        LiteRouter,
         Location,
-        { provide: ROUTER_LITE_INITIAL_ROUTE, useFactory: browserInitialRouteFactory },
-        { provide: ROUTER_LITE_ROUTES, useValue: routes },
+        { provide: LITE_ROUTER_INITIAL_ROUTE, useFactory: browserInitialRouteFactory },
+        { provide: LITE_ROUTER_ROUTES, useValue: routes },
         { provide: UrlSerializer, useClass: DefaultUrlSerializer },
         {
           provide: LocationStrategy,

@@ -1,5 +1,5 @@
 {
-  "name": "@toxicable/router",
+  "name": "@toxicable/lite-router",
   "version": "0.0.2",
   "license": "MIT",
   "peerDependencies": {

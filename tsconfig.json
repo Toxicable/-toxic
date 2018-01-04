@@ -1,7 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
@@ -11,16 +10,19 @@
     "typeRoots": [
       "node_modules/@types"
     ],
-    "baseUrl": "./",
-    "paths": {
-      "@toxicable/lite-router": ["packages/lite-router/public_api"]
-    },
-    "types": [
-      "node"
-    ],
     "lib": [
       "es2017",
       "dom"
-    ]
-  }
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@toxicable/*": [
+        "libs/*"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

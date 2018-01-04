@@ -1,4 +1,5 @@
 {
+  "$schema": "../../node_modules/ng-packagr/package.schema.json",
   "name": "@toxicable/lite-router",
   "version": "0.0.4",
   "license": "MIT",
@@ -7,5 +8,11 @@
     "@angular/core": "^5.0.0",
     "@angular/router": "^5.0.0",
     "rxjs": "^5.5.2"
+  },
+  "ngPackage": {
+    "dest": "../../dist/lite-router",
+    "lib": {
+      "entryFile": "public_api.ts"
+    }
   }
 }

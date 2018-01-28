@@ -1,8 +1,8 @@
 export interface ConfigFile {
-  tsConfigPath: string;
-  entryPoint: string;
-  outputPath: string;
   root: string;
+  tsconfig: string;
+  main: string;
+  outDir: string;
 }
 
 export interface CommandOptions {
@@ -12,7 +12,6 @@ export interface CommandOptions {
 export interface CliOptions {
   prod: boolean;
   dev: boolean;
-  project: string;
 }
 
 export interface Options extends CliOptions, CommandOptions {

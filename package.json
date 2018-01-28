@@ -9,7 +9,7 @@
     "git-tools:publish": "npm publish ./packages/git-tools/dist --tag next --access=public",
     "ts-cli:build": "tsc -p ./packages/ts-cli/tsconfig.json && cpy ./packages/ts-cli/package.json ./packages/ts-cli/dist",
     "ts-cli:publish": "npm publish ./packages/ts-cli/dist --tag next --access=public",
-    "ts-cli:demo": "yarn ts-cli:build && node packages/ts-cli/dist/index.js serve -p packages/ts-cli/demo/.ts-cli.json"
+    "ts-cli:demo": "yarn ts-cli:build && cd packages/ts-cli/demo && node ../dist/index.js serve"
   },
   "private": true,
   "devDependencies": {

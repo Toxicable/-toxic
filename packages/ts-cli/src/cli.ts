@@ -13,7 +13,7 @@ export function main() {
 
   if (options.command === 'serve') {
 
-    const outfilePath = path.join(options.absoluteRoot, options.configFile.outputPath);
+    const outfilePath = path.join(options.absoluteRoot, options.configFile.outDir);
     const outfile = path.join(outfilePath, 'bundle.js');
 
     const webpackConfig = makeWebpackConfig(options, outfilePath);

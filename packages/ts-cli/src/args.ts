@@ -9,7 +9,6 @@ const commandOptionDefinitions: commandLineArgs.OptionDefinition[] = [
   { name: 'command', defaultOption: true }
 ];
 const cliOptionDefinitions: commandLineArgs.OptionDefinition[] = [
-  { name: 'project', alias: 'p', type: String, defaultValue: configFileName},
   { name: 'prod', type: Boolean, defaultValue: false },
   { name: 'dev', type: Boolean, defaultValue: true },
 ];
@@ -23,12 +22,12 @@ export function getOptions(): Options {
   const cliOptions: CliOptions = commandLineArgs(cliOptionDefinitions, { argv });
 
   const cwd = process.cwd();
-  const configFilePath = path.join(cwd, cliOptions.project);
+  const configFilePath = path.join(cwd, configFileName);
 
   const configFile: ConfigFile = JSON.parse(fs.readFileSync(configFilePath).toString());
 
   return Object.assign({}, commandOptions, cliOptions, {
     configFile,
-    absoluteRoot: path.join(configFilePath.replace(configFileName, ''), configFile.root)
+    absoluteRoot: path.join(cwd, configFile.root)
    });
 }

@@ -9,13 +9,14 @@ Commands:
 * `ts-cli serve`
 
 You will need a `.ts-cli.json` file in your root directory with these entries
+See the demo directory for a full example
 ```
 {
   "root": ".",
-  "tsConfigPath": "./tsconfig.app.json",
-  "entryPoint": "./src/main.ts",
-  "outputPath": "./dist/"
-}  
+  "tsconfig": "./tsconfig.app.json",
+  "main": "./src/main.ts",
+  "outDir": "./dist/"
+} 
 ```
 
 TODO:

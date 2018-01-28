@@ -5,8 +5,8 @@ import * as externals from 'webpack-node-externals';
 
 export function makeWebpackConfig(options: Options, outfilePath: string): webpack.Configuration {
 
-  const entry = path.join(options.absoluteRoot, options.configFile.entryPoint);
-  const tsConfigFile = path.join(options.absoluteRoot, options.configFile.tsConfigPath);
+  const entry = path.join(options.absoluteRoot, options.configFile.main);
+  const tsconfig = path.join(options.absoluteRoot, options.configFile.tsconfig);
 
   return {
     entry: entry,
@@ -18,7 +18,7 @@ export function makeWebpackConfig(options: Options, outfilePath: string): webpac
       rules: [
         {
           test: /\.ts$/,
-          loader: `awesome-typescript-loader?configFileName=${tsConfigFile}`
+          loader: `awesome-typescript-loader?configFileName=${tsconfig}`
         }
       ]
     },

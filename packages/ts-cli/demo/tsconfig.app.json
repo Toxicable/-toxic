@@ -3,6 +3,9 @@
     "target": "es5",
     "module": "commonjs",
     "sourceMap": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
     "lib": [
       "es2017"
     ]
@@ -13,5 +16,4 @@
   "exclude": [
     "node_modules"
   ]
-
 }

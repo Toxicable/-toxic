@@ -12,5 +12,6 @@
     "awesome-typescript-loader": "^3.4.1"
   },
   "peerDependencies": {
+    "typescript": "^2.0.0"
   }
 }

@@ -3,15 +3,15 @@
     "target": "es5",
     "module": "commonjs",
     "sourceMap": true,
-    "types": [
-      "node"
-    ],
     "lib": [
       "es2017"
     ]
   },
   "files": [
     "./src/main.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 
 }

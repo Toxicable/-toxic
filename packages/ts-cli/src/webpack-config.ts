@@ -1,17 +1,16 @@
 import * as webpack from 'webpack';
 import * as path from 'path';
 import { CliOptions, ConfigFile, Options } from './interfaces';
-const nodeExternals = require('webpack-node-externals');
 import * as externals from 'webpack-node-externals';
 
 export function makeWebpackConfig(options: Options, outfilePath: string): webpack.Configuration {
 
   const entry = path.join(options.absoluteRoot, options.configFile.entryPoint);
   const tsConfigFile = path.join(options.absoluteRoot, options.configFile.tsConfigPath);
+
   return {
-    entry: entry, // path.relative(process.cwd(), entry),
+    entry: entry,
     output: {
-      // Puts the output at the root of the dist folder
       path: outfilePath,
       filename: 'bundle.js'
     },
@@ -19,15 +18,18 @@ export function makeWebpackConfig(options: Options, outfilePath: string): webpac
       rules: [
         {
           test: /\.ts$/,
-          loader: `ts-loader?configFile=${tsConfigFile}`
+          loader: `awesome-typescript-loader?configFileName=${tsConfigFile}`
         }
       ]
     },
     target: 'node',
-    devtool: 'cheap-module-eval-source-map',
-    // devtool: 'source-map',
-    // devtool: 'inline-source-map',
+
+    devtool: options.prod ? 'source-map' : 'eval-source-map',
+
     resolve: { extensions: ['.ts', '.js'] },
-    externals: [externals()]
+    externals: [
+      // TODO: bundle on prod mode
+      externals()
+    ]
   };
 }

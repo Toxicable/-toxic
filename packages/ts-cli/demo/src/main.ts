@@ -1,10 +1,16 @@
 import { name } from './another';
 debugger
-var t = 3;
+
+//setInterval(() => console.log('inerval'), 500)
+
 setTimeout(() => {
-debugger
-  var y = 4;
-}, 1000)
+  debugger
+  console.log('done');
+  console.log('done');
+  console.log('done');
+  console.log('done');
+}, 2500);
+
 import * as express from 'express';
 debugger
 

@@ -1,0 +1,14 @@
+{
+  "name": "@toxicable/ts-cli",
+  "version": "0.0.4",
+  "license": "MIT",
+  "bin": {
+    "ts-cli": "./index.js"
+  },
+  "peerDependencies": {
+    "webpack": "^3.10.0",
+    "command-line-args":"^5.0.1",
+    "webpack-node-externals":"^1.6.0",
+    "ts-loader": "^3.3.1"
+  }
+}

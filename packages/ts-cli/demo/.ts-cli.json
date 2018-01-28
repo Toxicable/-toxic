@@ -1,0 +1,6 @@
+{
+  "root": ".",
+  "tsConfigPath": "./tsconfig.app.json",
+  "entryPoint": "./src/main.ts",
+  "outputPath": "./dist/"
+}

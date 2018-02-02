@@ -9,17 +9,32 @@ export interface ConfigFile {
 }
 
 export interface CommandOptions {
-  command: 'serve' | 'build';
+  command: 'serve' | 'build' | 'new';
 }
 
-export interface CliOptions {
+export interface ServeOptions {
   prod: boolean;
   dev: boolean;
 }
 
-export interface Options extends CliOptions, CommandOptions {
+export interface NewOptions {
+  app: boolean;
+  lib: boolean;
+}
+
+export interface BuildOptions {
+  prod: boolean;
+  dev: boolean;
+}
+
+export interface Options {
   configFile: ConfigFile;
   absoluteRoot: string;
+
+  commandOptions: CommandOptions;
+  serveOptions: ServeOptions;
+  buildOptions: BuildOptions;
+  newOptions: NewOptions;
 }
 
 

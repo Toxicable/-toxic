@@ -1,28 +1,14 @@
 import { name } from './another';
 debugger
 
-//setInterval(() => console.log('inerval'), 500)
-
-setTimeout(() => {
+setInterval(() => {
   debugger
-  console.log('done');
-  console.log('done');
-  console.log('done');
-  console.log('really done done');
-  console.log('very last')
-}, 2500);
+  console.log('inerval')
+}, 5000)
 
-import * as express from 'express';
 debugger
 
-const app = express();
 
+var t = 'hsello' + 3 + name
 
-
-setTimeout(() => {
-  debugger
-  app.listen(3000,() => {
-    debugger
-    console.log('listening on 3000')
-  });
-}, 1000);
+ console.log(t)

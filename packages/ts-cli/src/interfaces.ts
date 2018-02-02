@@ -1,8 +1,11 @@
 export interface ConfigFile {
   root: string;
   tsconfig: string;
+  absoluteTsconfig?: string;
   main: string;
+  absoluteMain?: string;
   outDir: string;
+  absoluteOutDir?: string;
 }
 
 export interface CommandOptions {

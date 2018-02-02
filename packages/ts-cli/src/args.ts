@@ -26,8 +26,13 @@ export function getOptions(): Options {
 
   const configFile: ConfigFile = JSON.parse(fs.readFileSync(configFilePath).toString());
 
+  const absoluteRoot = path.join(cwd, configFile.root);
+  configFile.absoluteMain = path.join(absoluteRoot, configFile.main);
+  configFile.absoluteOutDir = path.join(absoluteRoot, configFile.outDir);
+  configFile.absoluteTsconfig = path.join(absoluteRoot, configFile.tsconfig);
+
   return Object.assign({}, commandOptions, cliOptions, {
     configFile,
-    absoluteRoot: path.join(cwd, configFile.root)
+    absoluteRoot
    });
 }

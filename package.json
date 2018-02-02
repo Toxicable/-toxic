@@ -47,7 +47,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "ng-packagr": "^1.5.0",
     "protractor": "~5.1.2",
-    "rxjs": "^5.5.0",
+    "rxjs": "^5.5.6",
     "simple-git": "^1.80.1",
     "ts-loader": "^3.3.1",
     "ts-node": "^3.3.0",
@@ -59,6 +59,10 @@
   },
   "dependencies": {
     "@angular-devkit/schematics": "^0.2.0",
-    "awesome-typescript-loader": "^3.4.1"
+    "@types/acorn": "^4.0.3",
+    "acorn": "^5.4.1",
+    "awesome-typescript-loader": "^3.4.1",
+    "rollup": "^0.55.3",
+    "rollup-plugin-typescript2": "^0.11.0"
   }
 }

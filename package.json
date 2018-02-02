@@ -58,6 +58,7 @@
     "zone.js": "^0.8.14"
   },
   "dependencies": {
+    "@angular-devkit/schematics": "^0.2.0",
     "awesome-typescript-loader": "^3.4.1"
   }
 }

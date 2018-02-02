@@ -6,7 +6,7 @@ export interface ConfigFile {
 }
 
 export interface CommandOptions {
-  command: 'serve';
+  command: 'serve' | 'build';
 }
 
 export interface CliOptions {

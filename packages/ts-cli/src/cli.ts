@@ -58,5 +58,9 @@ export function main() {
       }
     });
   }
+
+  if (options.command === 'build') {
+
+  }
 }
 

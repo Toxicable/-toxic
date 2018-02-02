@@ -1,12 +1,14 @@
 import { Options } from './interfaces';
 import rollup from 'rollup/dist/typings/rollup';
 import { watchRollup } from './bundlers/rollup';
+import { watchWebpack } from './bundlers/webpack';
 import * as path from 'path';
 import * as fs from 'fs';
 import { ChildProcess, fork } from 'child_process';
 
 export function serve(options: Options) {
-  const bundled$ = watchRollup(options.configFile.absoluteMain, options.configFile.absoluteOutDir, options.configFile.absoluteTsconfig);
+//  const bundled$ = watchRollup(options.configFile.absoluteMain, options.configFile.absoluteOutDir, options.configFile.absoluteTsconfig);
+  const bundled$ = watchWebpack(options.configFile.absoluteMain, options.configFile.absoluteOutDir, options.configFile.absoluteTsconfig);
 
   const outfile = path.join(options.configFile.absoluteOutDir, 'bundle.js');
 

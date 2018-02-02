@@ -2,11 +2,10 @@ import * as webpack from 'webpack';
 import * as path from 'path';
 import { CliOptions, ConfigFile, Options } from '../interfaces';
 import * as externals from 'webpack-node-externals';
-import * as fs from 'fs';
-import { fork, ChildProcess } from 'child_process';
 import { log } from '../logger';
+import { Subject } from 'rxjs/Subject';
 
-export function makeWebpackConfig(entry: string, outDir: string, tsconfig: string) {
+export function watchWebpack(entry: string, outDir: string, tsconfig: string) {
 
   const webpackConfig = {
     entry: entry,
@@ -38,8 +37,9 @@ export function makeWebpackConfig(entry: string, outDir: string, tsconfig: strin
 
   const compiler = webpack(webpackConfig as any);
 
-  let subProcess: ChildProcess;
   let lastHash: string = null;
+
+  const bundled$ = new Subject();
 
   compiler.watch({}, (err, stats) => {
 
@@ -65,14 +65,8 @@ export function makeWebpackConfig(entry: string, outDir: string, tsconfig: strin
       }
     }
 
-    if (fs.existsSync(outfile)) {
-      // subProcess = spawn('node', ['--inspect', outfile], { stdio: 'pipe' });
-      if (subProcess) {
-        subProcess.kill('SIGINT');
-      }
-      subProcess = fork(outfile, [], {
-        execArgv: ['--inspect']
-      });
-    }
+    bundled$.next();
   });
+
+  return bundled$;
 }

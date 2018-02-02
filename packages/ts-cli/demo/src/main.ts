@@ -1,14 +1,14 @@
 import { name } from './another';
-debugger
 
-setInterval(() => {
+setTimeout(() => {
   debugger
-  console.log('inerval')
-}, 5000)
+  console.log('ine rv al ');
+  var a: any;
 
+  //a();
+}, 5000);
 debugger
 
 
-var t = 'hsello' + 3 + name
-
- console.log(t)
+const t = 'h el lo' + 3 + name;
+console.log(t);

@@ -1,8 +1,8 @@
 import { name } from './another';
-import * as express from 'express'
+//import * as express from 'express'
 setTimeout(() => {
   debugger
-  console.log('ine rv  al ');
+  console.log('interva');
   var a: any;
 
   //a();
@@ -10,8 +10,8 @@ setTimeout(() => {
 debugger
 
 
-const t = 'h el lo' + 3 + name;
+const t = 'hello' + 3 + name;
 console.log(t);
 
-var app = express();
-app.listen(3000);
+//var app = express();
+//app.listen(3000);

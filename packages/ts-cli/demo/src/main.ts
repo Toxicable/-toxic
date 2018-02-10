@@ -2,7 +2,7 @@ import { name } from './another';
 //import * as express from 'express'
 setTimeout(() => {
   debugger
-  console.log('interva');
+  console.log('interval ');
   var a: any;
 
   //a();

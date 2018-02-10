@@ -5,7 +5,7 @@ import { strings } from '@angular-devkit/core';
 // You don't have to export the function as default. You can also have more than one rule factory
 // per file.
 export default function(options: appOptions): Rule {
-
+  options.name = 'hello-schematics';
   const templateSource = apply(url('./files'), [
     template({
       ...strings,

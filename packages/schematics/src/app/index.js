@@ -5,6 +5,7 @@ const core_1 = require("@angular-devkit/core");
 // You don't have to export the function as default. You can also have more than one rule factory
 // per file.
 function default_1(options) {
+    options.name = 'hello-schematics';
     const templateSource = schematics_1.apply(schematics_1.url('./files'), [
         schematics_1.template(Object.assign({}, core_1.strings, options))
     ]);

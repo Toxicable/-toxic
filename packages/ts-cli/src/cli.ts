@@ -1,6 +1,6 @@
 import { getOptions } from './args';
 import { serve } from './serve';
-
+import { makeNewApp } from './new';
 export function main() {
   const options = getOptions();
 
@@ -16,6 +16,7 @@ export function main() {
 
   if (options.commandOptions.command === 'new') {
 
+    makeNewApp()
   }
 
 }

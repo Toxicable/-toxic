@@ -1,0 +1,20 @@
+{
+  "name": "<%= dasherize(name) %>",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "serve": "ts-cli serve",
+    "lint": "",
+    "build": ""
+  },
+  "private": true,
+  "devDependencies": {
+    "@toxicable/ts-cli": "^0.0.5",
+    "@types/express": "^4.11.0",
+    "@types/node": "^9.4.0",
+    "express": "^4.16.2",
+    "typescript": "^2.7.2"
+  },
+  "dependencies": {
+  }
+}

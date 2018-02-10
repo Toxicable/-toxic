@@ -1,0 +1,12 @@
+{
+    "$schema": "http://json-schema.org/schema",
+    "id": "app",
+    "title": "ts-cli options schema",
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "The name of the app"
+      }
+    }
+}

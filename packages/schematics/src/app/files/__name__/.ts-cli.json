@@ -1,0 +1,6 @@
+{
+  "root": ".",
+  "tsconfig": "./tsconfig.json",
+  "main": "./src/main.ts",
+  "outDir": "./dist/"
+}

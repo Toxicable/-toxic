@@ -30,11 +30,6 @@ export interface BuildOptions {
 export interface Options {
   configFile: ConfigFile;
   absoluteRoot: string;
-
-  commandOptions: CommandOptions;
-  serveOptions: ServeOptions;
-  buildOptions: BuildOptions;
-  newOptions: NewOptions;
 }
 
 

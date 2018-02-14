@@ -1,22 +1,25 @@
 import * as rollup from 'rollup';
 import { Options } from '../interfaces';
-import * as ts from 'rollup-plugin-typescript2';
+import ts from 'rollup-plugin-typescript2';
 import * as path from 'path';
 import { Subject } from 'rxjs/Subject';
+import { logging } from '@angular-devkit/core';
+import resolve from 'rollup-plugin-node-resolve';
 
 const tsPlugin: any = ts;
 
 
-export function watchRollup(entry: string, outDir: string, tsconfig: string) {
+export function watchRollup(entry: string, outDir: string, tsconfig: string, logger: logging.Logger) {
   const inputOptions: rollup.InputOptions = {
     // core options
     input: entry, // the only required option
     preserveSymlinks: true,
 
     plugins: [
-      tsPlugin({
-        tsconfig: tsconfig
-      })
+      ts({
+        tsconfig: tsconfig,
+      }) as any,
+      //resolve()
     ],
   };
 
@@ -41,24 +44,24 @@ export function watchRollup(entry: string, outDir: string, tsconfig: string) {
   watcher.on('event', (event: any) => {
 
     if (event.code === 'START') {
-      console.log('start bundling');
+      logger.info('start bundling');
       startedAt = new Date();
     }
 
     if (event.code === 'END') {
       const interval = Number(new Date()) - Number(startedAt);
-      console.log(`end bundling, took: ${interval}ms`);
+      logger.info(`end bundling, took: ${interval}ms`);
       bundled$.next();
     }
 
     if (event.code === 'ERROR') {
-      console.log('err');
-      console.log(event.error.message);
+      logger.info('err');
+      logger.info(event.error.message);
     }
 
     if (event.code === 'FATAL') {
-      console.log('whops, something fatal');
-      console.log(event.error.message);
+      logger.info('whops, something fatal');
+      logger.info(event.error.message);
     }
   });
   return bundled$;

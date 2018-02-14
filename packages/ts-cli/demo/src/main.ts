@@ -1,5 +1,5 @@
 import { name } from './another';
-//import * as express from 'express'
+import * as express from 'express';
 setTimeout(() => {
   debugger
   console.log('interval ');
@@ -10,8 +10,8 @@ setTimeout(() => {
 debugger
 
 
-const t = 'hello' + 3 + name;
+const t = 'hello  ' + 3 + name;
 console.log(t);
 
-//var app = express();
-//app.listen(3000);
+var app = express();
+app.listen(3000);

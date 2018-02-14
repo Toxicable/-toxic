@@ -7,12 +7,12 @@ import {
 } from '@angular-devkit/schematics/tools';
 import { SchematicEngine, FileSystemSink, FileSystemTree, Tree, DryRunSink } from '@angular-devkit/schematics';
 import { of } from 'rxjs/observable/of';
-import { createConsoleLogger } from '@angular-devkit/core/node';
 import { map, concatMap, ignoreElements } from 'rxjs/operators';
 import { concat } from 'rxjs/observable/concat';
+import { logging } from '@angular-devkit/core';
 
-export function makeNewApp() {
-  const logger = createConsoleLogger(true);
+
+export function makeNewApp(logger: logging.Logger, name: string) {
   const engineHost = new NodeModulesEngineHost();
   const engine = new SchematicEngine(engineHost);
 
@@ -25,7 +25,7 @@ export function makeNewApp() {
 
   const loggingQueue: string[] = [];
 
-  schematic.call({name: 'TEST'}, host, { debug: false, logger: logger.asApi() })
+  schematic.call({name}, host, { debug: false, logger: logger.asApi() })
   .pipe(
     map((tree: Tree) => Tree.optimize(tree)),
     concatMap((tree: Tree) => {

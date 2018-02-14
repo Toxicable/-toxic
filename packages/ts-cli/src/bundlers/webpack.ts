@@ -1,10 +1,11 @@
 import * as webpack from 'webpack';
 import * as path from 'path';
-import { ServeOptions, ConfigFile, Options } from '../interfaces';
+import { ConfigFile, Options } from '../interfaces';
 import * as externals from 'webpack-node-externals';
 import { Subject } from 'rxjs/Subject';
+import { logging } from '@angular-devkit/core';
 
-export function watchWebpack(entry: string, outDir: string, tsconfig: string) {
+export function watchWebpack(logger: logging.Logger, entry: string, outDir: string, tsconfig: string) {
 
   const webpackConfig = {
     entry: entry,
@@ -39,8 +40,6 @@ export function watchWebpack(entry: string, outDir: string, tsconfig: string) {
   let lastHash: string = null;
 
   const bundled$ = new Subject();
-
-
   compiler.watch({}, (err, stats) => {
 
     if (err) {
@@ -49,9 +48,9 @@ export function watchWebpack(entry: string, outDir: string, tsconfig: string) {
     }
     if (err) {
       lastHash = null;
-      console.error(err.stack || err);
+      logger.error(err.stack || err.message);
       if (err['details']) {
-        console.error('really bad error', err['details']);
+        logger.error('really bad error', err['details']);
       }
       process.exitCode = 1;
       return;
@@ -61,7 +60,7 @@ export function watchWebpack(entry: string, outDir: string, tsconfig: string) {
       const statsString = stats.toString({ colors: true });
 
       if (statsString) {
-        console.log(statsString + '\n', 'webpack');
+        logger.info(statsString + '\n');
       }
     }
 

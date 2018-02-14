@@ -1,6 +1,6 @@
 # @toxicable/ts-cli
 
-A CLI for building TS Backend Apps.
+A CLI for building TS Server Side Apps.
 
 install: `yarn add @toxicable/ts-cli`
 
@@ -18,11 +18,3 @@ See the demo directory for a full example
   "outDir": "./dist/"
 } 
 ```
-
-TODO:
-* `ts-cli build` For production builds
-* `--prod` and `--dev` flags with config based off the Angular CLI
-* `ts-cli new {app name}` for templating out a new project
-
-
-

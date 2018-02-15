@@ -1,6 +1,6 @@
 {
   "name": "@toxicable/schematics",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "schematics": "./src/collection.json",
   "dependencies": {

@@ -1,10 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatSelectModule, MatInputModule } from '@angular/material';
+import { MatButtonModule, MatSelectModule, MatInputModule, MatCheckboxModule } from '@angular/material';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireModule } from 'angularfire2';
 
@@ -19,6 +20,8 @@ import { AngularFireModule } from 'angularfire2';
     MatButtonModule,
     MatSelectModule,
     MatInputModule,
+    MatCheckboxModule,
+    ReactiveFormsModule,
     AngularFirestoreModule,
     AngularFireModule.initializeApp({
       apiKey: 'AIzaSyCz1r2UaADi_Xel0-QOpMyLy0gvFWjCbQg',

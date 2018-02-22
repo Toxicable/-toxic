@@ -4,7 +4,7 @@ import { AngularFirestore, AngularFirestoreCollection, DocumentChangeAction } fr
 import { Observable } from 'rxjs/Observable';
 import { Thurger } from './thuger';
 import { timer } from 'rxjs/observable/timer';
-import { addDays } from 'date-fns';
+import { addDays, distanceInWordsToNow } from 'date-fns';
 
 function snapshotChangesId<T>(items: DocumentChangeAction[]): any  {
   return items.map(a => {
@@ -37,6 +37,12 @@ export class AppComponent implements OnInit {
 
     this.thurgerIds$ = this.thurgersRef.snapshotChanges()
       .map(thurgers => snapshotChangesId<Thurger>(thurgers))
+      .map((thurgers: Thurger[]) => {
+        return thurgers.map(t => {
+          t.addedAt = distanceInWordsToNow(t.updatedAt);
+          return t;
+        });
+      })
       .pipe(shareReplay());
 
 
@@ -45,12 +51,13 @@ export class AppComponent implements OnInit {
         const count = {
           Chicken: 0,
           Beef: 0,
+          Other: []
         };
         thurgers.forEach(t => {
-          if (t.choice === 'Beef') {
-            count.Beef += 1;
-          } else if (t.choice === 'Chicken') {
-            count.Chicken += 1;
+          if (t.extras) {
+            count.Other.push(`${t.choice} + ${t.extras}`);
+          } else {
+            count[t.choice] += 1;
           }
         });
         return count;
@@ -83,21 +90,6 @@ export class AppComponent implements OnInit {
     );
   }
 
-  t() {
-    const MIN_IN_MS = 60 * 1000;
-    const HOUR_IN_MS = 60 * MIN_IN_MS;
-    const DAY_IN_MS = 24 * HOUR_IN_MS;
-
-    const msDiff = 12345;
-
-    const days = Math.floor(msDiff / DAY_IN_MS);
-    let rem = msDiff % DAY_IN_MS;
-    const hours = Math.floor(rem / HOUR_IN_MS);
-    rem = rem % HOUR_IN_MS;
-    const minutes = Math.floor(rem / MIN_IN_MS);
-    rem = rem % MIN_IN_MS;
-  }
-
   getTimeRemaining(endtime: Date) {
     const t = endtime.getTime() - new Date().getTime();
     const seconds = Math.floor((t / 1000) % 60);
@@ -116,10 +108,12 @@ export class AppComponent implements OnInit {
     return item['id'];
   }
 
-  select(id: string, name: string, choice: 'Chicken' | 'Beef') {
+  update(id: string, name: string, choice: 'Chicken' | 'Beef', extras: string) {
     this.thurgersRef.doc(id).update({
       name,
       choice,
+      extras,
+      updatedAt: new Date().toISOString(),
     });
   }
 
@@ -127,18 +121,10 @@ export class AppComponent implements OnInit {
     this.thurgersRef.add({
       name: null,
       choice: null,
-      addedAt: new Date().toISOString()
+      extras: null,
+      addedAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     });
-  }
-
-  reset() {
-    this.thurgerIds$
-      .pipe(first())
-      .subscribe(ts => {
-        ts.forEach(t => {
-          this.remove(t.id);
-        });
-      });
   }
 
   remove(id: string) {

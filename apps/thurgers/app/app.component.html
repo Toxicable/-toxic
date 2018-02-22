@@ -4,9 +4,15 @@
     T - {{thurgerTime$ | async}}
   </h1>
 
-  <h2 *ngIf="counts$ | async as count">
+  <div *ngIf="counts$ | async as count">
+    <h2>Normal Orders</h2>
     Beef: {{count.Beef}} - Chicken: {{count.Chicken}}
-  </h2>
+
+    <h2>Special Orders</h2>
+    <div *ngFor="let extra of count.Other">
+      {{extra}}
+    </div>
+  </div>
 
   <div>
     <h2>What do you want?</h2>
@@ -15,11 +21,14 @@
   <button mat-raised-button color="primary" (click)="add()">Add Person</button>
   <div *ngFor="let person of thurgers$ | async as thurger; trackBy: trackById">
     <mat-form-field>
-      <input matInput placeholder="name" #input [value]="person.name" (keyup)="select(person.id, input.value, person.choice)" />
+      <input matInput placeholder="Name" #input [value]="person.name" (keyup)="update(person.id, input.value, person.choice, extras.value)" />
     </mat-form-field>
-    <button mat-raised-button [color]="person.choice === 'Beef' ? 'primary' : ''" (click)="select(person.id, input.value, 'Beef')" >Beef</button>
-    <button mat-raised-button [color]="person.choice === 'Chicken' ? 'primary' : ''" (click)="select(person.id, input.value, 'Chicken')" >Chicken</button>
+    <button mat-raised-button [color]="person.choice === 'Beef' ? 'primary' : ''" (click)="update(person.id, input.value, 'Beef', extras.value)" >Beef</button>
+    <button mat-raised-button [color]="person.choice === 'Chicken' ? 'primary' : ''" (click)="update(person.id, input.value, 'Chicken', extras.value)" >Chicken</button>
     <button mat-raised-button color="warn" (click)="remove(person.id)" >Remove</button>
+    <mat-form-field>
+      <input matInput placeholder="Extras" #extras [value]="person.extras" (keyup)="update(person.id, input.value, person.choice, extras.value)" />
+    </mat-form-field>
+    Last Edited: {{person.addedAt}} ago
   </div>
-
 </div>

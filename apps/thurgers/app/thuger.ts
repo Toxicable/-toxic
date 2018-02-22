@@ -4,4 +4,6 @@ export interface Thurger {
   name: string;
   choice: 'Chicken' | 'Beef';
   addedAt: string;
+  updatedAt: string;
+  extras: string;
 }

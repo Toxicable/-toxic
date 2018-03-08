@@ -7,12 +7,18 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule, MatSelectModule, MatInputModule, MatCheckboxModule } from '@angular/material';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireModule } from 'angularfire2';
-
+import { LoginComponent } from './login/login.component';
+import { OrdersComponent } from './orders/orders.component';
+import { RouterModule } from '@angular/router';
+import { AuthGuardService } from './login/auth.guard';
 
 @NgModule({
   declarations: [
     AppComponent,
+    LoginComponent,
+    OrdersComponent
   ],
   imports: [
     BrowserModule,
@@ -23,6 +29,7 @@ import { AngularFireModule } from 'angularfire2';
     MatCheckboxModule,
     ReactiveFormsModule,
     AngularFirestoreModule,
+    AngularFireAuthModule,
     AngularFireModule.initializeApp({
       apiKey: 'AIzaSyCz1r2UaADi_Xel0-QOpMyLy0gvFWjCbQg',
       authDomain: 'thurgers.firebaseapp.com',
@@ -31,8 +38,12 @@ import { AngularFireModule } from 'angularfire2';
       storageBucket: 'thurgers.appspot.com',
       messagingSenderId: '1016886607087'
     }),
+    RouterModule.forRoot([
+      {path: '', component: OrdersComponent, canActivate: [AuthGuardService]},
+      {path: 'login', component: LoginComponent},
+    ])
   ],
-  providers: [],
+  providers: [AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

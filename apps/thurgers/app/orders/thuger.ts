@@ -1,7 +1,7 @@
 
 export interface Thurger {
   id?: string;
-  name: string;
+  email: string;
   choice: 'Chicken' | 'Beef';
   addedAt: string;
   updatedAt: string;

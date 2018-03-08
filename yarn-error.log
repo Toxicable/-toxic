@@ -1,17 +1,17 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn add @angular-devkit/core @angular-devkit/schematics
+  /usr/bin/node /usr/share/yarn/bin/yarn.js build
 
 PATH: 
-  /Library/Frameworks/Python.framework/Versions/3.4/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:/Library/Frameworks/Python.framework/Versions/3.4/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin
+  /home/fabian/bin:/home/fabian/.local/bin:/home/fabian/bin:/home/fabian/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 
 Yarn version: 
-  1.0.2
+  1.5.1
 
 Node version: 
-  8.9.3
+  8.9.4
 
 Platform: 
-  darwin x64
+  linux x64
 
 npm manifest: 
   {
@@ -24,8 +24,15 @@ npm manifest:
       "git-tools:build": "tsc -p ./packages/git-tools/tsconfig.json && cpy ./packages/git-tools/package.json ./packages/git-tools/dist",
       "git-tools:publish": "npm publish ./packages/git-tools/dist --tag next --access=public",
       "ts-cli:build": "tsc -p ./packages/ts-cli/tsconfig.json && cpy ./packages/ts-cli/package.json ./packages/ts-cli/dist",
+      "ts-cli:build:watch": "tsc -w -p ./packages/ts-cli/tsconfig.json && cpy ./packages/ts-cli/package.json ./packages/ts-cli/dist",
       "ts-cli:publish": "npm publish ./packages/ts-cli/dist --tag next --access=public",
-      "ts-cli:demo": "yarn ts-cli:build && cd packages/ts-cli/demo && node ../dist/index.js serve"
+      "ts-cli:demo": "yarn ts-cli:build && cd packages/ts-cli/demo && node ../dist/index.js serve",
+      "schematics:test": "yarn schematics:build && jasmine packages/schematics/**/*.spec.js",
+      "schematics:build": "tsc -p packages/schematics/tsconfig.json",
+      "schematics:publish": "yarn schematics:build && npm publish packages/schematics --tag next --access=public",
+      "thurgers:serve": "ng serve --app=thurgers --aot",
+      "thurgers:build": "ng build --prod --app=thurgers",
+      "thurgers:deploy": "yarn thurgers:build && cd apps/thurgers && firebase deploy"
     },
     "private": true,
     "devDependencies": {
@@ -68,19 +75,27 @@ npm manifest:
       "ts-loader": "^3.3.1",
       "ts-node": "^3.3.0",
       "tslint": "~5.7.0",
-      "typescript": "^2.0.0",
+      "typescript": "^2.7.0",
       "webpack": "^3.10.0",
       "webpack-node-externals": "^1.6.0",
       "zone.js": "^0.8.14"
     },
     "dependencies": {
+      "@angular-devkit/core": "^0.3.1",
       "@angular-devkit/schematics": "^0.3.1",
+      "@angular/cdk": "^5.2.1",
+      "@angular/material": "^5.2.1",
       "@types/acorn": "^4.0.3",
       "acorn": "^5.4.1",
+      "angularfire2": "^5.0.0-rc.6",
       "awesome-typescript-loader": "^3.4.1",
+      "date-fns": "^1.29.0",
+      "firebase": "^4.9.1",
       "jasmine": "^3.0.0",
       "rollup": "^0.55.3",
-      "rollup-plugin-typescript2": "^0.11.0"
+      "rollup-plugin-node-resolve": "^3.0.2",
+      "rollup-plugin-typescript2": "^0.11.0",
+      "subcommander": "^1.0.0"
     }
   }
 
@@ -107,6 +122,15 @@ Lockfile:
     dependencies:
       source-map "^0.5.6"
   
+  "@angular-devkit/core@^0.3.1":
+    version "0.3.1"
+    resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-0.3.1.tgz#6aeb990dec92d06360597928748aeeedc21afdde"
+    dependencies:
+      ajv "~5.5.1"
+      chokidar "^1.7.0"
+      rxjs "^5.5.6"
+      source-map "^0.5.6"
+  
   "@angular-devkit/schematics@^0.3.1":
     version "0.3.1"
     resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-0.3.1.tgz#eb40ca260681f4f420ca8ed41f754fb3ea689f81"
@@ -126,6 +150,12 @@ Lockfile:
   "@angular/animations@^5.0.0":
     version "5.0.0"
     resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-5.0.0.tgz#b5ad199c67f93f759544477effe6679e154991fb"
+    dependencies:
+      tslib "^1.7.1"
+  
+  "@angular/cdk@^5.2.1":
+    version "5.2.1"
+    resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-5.2.1.tgz#11500502deeaf42f88f92ca7d78d9a7642b07761"
     dependencies:
       tslib "^1.7.1"
   
@@ -235,6 +265,12 @@ Lockfile:
     version "5.0.0"
     resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-5.0.0.tgz#6ccbb69f4757270dd04ec5857d37634b2f02c40c"
   
+  "@angular/material@^5.2.1":
+    version "5.2.1"
+    resolved "https://registry.yarnpkg.com/@angular/material/-/material-5.2.1.tgz#c0433edf98904dc35ae15dfa93ede755418843dd"
+    dependencies:
+      tslib "^1.7.1"
+  
   "@angular/platform-browser-dynamic@^5.0.0":
     version "5.0.0"
     resolved "https://registry.yarnpkg.com/@angular/platform-browser-dynamic/-/platform-browser-dynamic-5.0.0.tgz#887e106c8b103b0415cf6156a425da6d83f4c89d"
@@ -258,6 +294,86 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/@angular/tsc-wrapped/-/tsc-wrapped-4.4.6.tgz#16787cbbf50bdc7e738123b19c32527f244e178d"
     dependencies:
       tsickle "^0.21.0"
+  
+  "@firebase/app-types@0.1.1":
+    version "0.1.1"
+    resolved "https://registry.yarnpkg.com/@firebase/app-types/-/app-types-0.1.1.tgz#1b794e101c779310763b1bfce8c24e7728fb9a91"
+  
+  "@firebase/app@0.1.8":
+    version "0.1.8"
+    resolved "https://registry.yarnpkg.com/@firebase/app/-/app-0.1.8.tgz#0952d0c0cb2926aaa9b39459c7d9df653fa54330"
+    dependencies:
+      "@firebase/app-types" "0.1.1"
+      "@firebase/util" "0.1.8"
+  
+  "@firebase/auth-types@0.1.1":
+    version "0.1.1"
+    resolved "https://registry.yarnpkg.com/@firebase/auth-types/-/auth-types-0.1.1.tgz#1b38caa9971cc9d8ed6dd114976d18d986f24a9a"
+  
+  "@firebase/auth@0.3.3":
+    version "0.3.3"
+    resolved "https://registry.yarnpkg.com/@firebase/auth/-/auth-0.3.3.tgz#4efabc46e11b4d186458232b7743d203847827c9"
+    dependencies:
+      "@firebase/auth-types" "0.1.1"
+  
+  "@firebase/database-types@0.1.1":
+    version "0.1.1"
+    resolved "https://registry.yarnpkg.com/@firebase/database-types/-/database-types-0.1.1.tgz#601b8040191766777b785c1675eac34ce57c669c"
+  
+  "@firebase/database@0.1.9":
+    version "0.1.9"
+    resolved "https://registry.yarnpkg.com/@firebase/database/-/database-0.1.9.tgz#ea5f376d1a59d16f909dfb46c597b55e35d9834b"
+    dependencies:
+      "@firebase/database-types" "0.1.1"
+      "@firebase/util" "0.1.8"
+      faye-websocket "0.11.1"
+  
+  "@firebase/firestore-types@0.2.1":
+    version "0.2.1"
+    resolved "https://registry.yarnpkg.com/@firebase/firestore-types/-/firestore-types-0.2.1.tgz#f2f35856b283a521c64ac4fa45d140010037e046"
+  
+  "@firebase/firestore@0.3.2":
+    version "0.3.2"
+    resolved "https://registry.yarnpkg.com/@firebase/firestore/-/firestore-0.3.2.tgz#d997bcd96edc36b9b4abadb5c50d940ecea5d7bf"
+    dependencies:
+      "@firebase/firestore-types" "0.2.1"
+      "@firebase/webchannel-wrapper" "0.2.6"
+      grpc "^1.7.1"
+  
+  "@firebase/messaging-types@0.1.1":
+    version "0.1.1"
+    resolved "https://registry.yarnpkg.com/@firebase/messaging-types/-/messaging-types-0.1.1.tgz#66d61d800081b3f7e4d26f1f8523f0a307e37730"
+  
+  "@firebase/messaging@0.1.9":
+    version "0.1.9"
+    resolved "https://registry.yarnpkg.com/@firebase/messaging/-/messaging-0.1.9.tgz#0b231da9d5b89c9d1a176ee532dda164fe59c263"
+    dependencies:
+      "@firebase/messaging-types" "0.1.1"
+      "@firebase/util" "0.1.8"
+  
+  "@firebase/polyfill@0.1.4":
+    version "0.1.4"
+    resolved "https://registry.yarnpkg.com/@firebase/polyfill/-/polyfill-0.1.4.tgz#a17538ab0359f0398f360c561dc444249b2095c6"
+    dependencies:
+      promise-polyfill "^6.0.2"
+  
+  "@firebase/storage-types@0.1.1":
+    version "0.1.1"
+    resolved "https://registry.yarnpkg.com/@firebase/storage-types/-/storage-types-0.1.1.tgz#c8e1cd328e96ef5b88e07b0a4f5ce1c68087126b"
+  
+  "@firebase/storage@0.1.6":
+    version "0.1.6"
+    resolved "https://registry.yarnpkg.com/@firebase/storage/-/storage-0.1.6.tgz#a7a54ed9ec77bd47b9eb5b1353083bc3edd92e3e"
+    dependencies:
+      "@firebase/storage-types" "0.1.1"
+  
+  "@firebase/util@0.1.8":
+    version "0.1.8"
+    resolved "https://registry.yarnpkg.com/@firebase/util/-/util-0.1.8.tgz#7a7eb9d5fc56ba9e9b854bb2357d51f83b07df31"
+  
+  "@firebase/webchannel-wrapper@0.2.6":
+    version "0.2.6"
+    resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.2.6.tgz#a4b81ca8cdeb1acbc7923289a4a514f61b59db86"
   
   "@ngtools/json-schema@1.1.0", "@ngtools/json-schema@^1.1.0":
     version "1.1.0"
@@ -465,6 +581,15 @@ Lockfile:
       fast-json-stable-stringify "^2.0.0"
       json-schema-traverse "^0.3.0"
   
+  ajv@~5.5.1:
+    version "5.5.2"
+    resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.5.2.tgz#73b5eeca3fab653e3d3f9422b341ad42205dc965"
+    dependencies:
+      co "^4.6.0"
+      fast-deep-equal "^1.0.0"
+      fast-json-stable-stringify "^2.0.0"
+      json-schema-traverse "^0.3.0"
+  
   align-text@^0.1.1, align-text@^0.1.3:
     version "0.1.4"
     resolved "https://registry.yarnpkg.com/align-text/-/align-text-0.1.4.tgz#0cd90a561093f35d0a99256c22b7069433fad117"
@@ -480,6 +605,10 @@ Lockfile:
   amdefine@>=0.0.4:
     version "1.0.1"
     resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
+  
+  angularfire2@^5.0.0-rc.6:
+    version "5.0.0-rc.6"
+    resolved "https://registry.yarnpkg.com/angularfire2/-/angularfire2-5.0.0-rc.6.tgz#99dfecaf7fd9e6979e3c09f4dcf7e6768a8f91d1"
   
   ansi-html@0.0.7:
     version "0.0.7"
@@ -636,6 +765,13 @@ Lockfile:
   asap@~2.0.3:
     version "2.0.6"
     resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
+  
+  ascli@~1:
+    version "1.0.1"
+    resolved "https://registry.yarnpkg.com/ascli/-/ascli-1.0.1.tgz#bcfa5974a62f18e81cabaeb49732ab4a88f906bc"
+    dependencies:
+      colour "~0.7.1"
+      optjs "~3.2.2"
   
   asn1.js@^4.0.0:
     version "4.9.2"
@@ -1096,6 +1232,12 @@ Lockfile:
     version "3.0.0"
     resolved "https://registry.yarnpkg.com/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz#85982878e21b98e1c66425e03d0174788f569ee8"
   
+  bytebuffer@~5:
+    version "5.0.1"
+    resolved "https://registry.yarnpkg.com/bytebuffer/-/bytebuffer-5.0.1.tgz#582eea4b1a873b6d020a48d58df85f0bba6cfddd"
+    dependencies:
+      long "~3"
+  
   bytes@3.0.0:
     version "3.0.0"
     resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.0.0.tgz#d32815404d689699f85a4ea4fa8755dd13a96048"
@@ -1154,7 +1296,7 @@ Lockfile:
     version "1.2.1"
     resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-1.2.1.tgz#9bb5304d2e0b56698b2c758b08a3eaa9daa58a39"
   
-  camelcase@^2.0.0:
+  camelcase@^2.0.0, camelcase@^2.0.1:
     version "2.1.1"
     resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-2.1.1.tgz#7c1d16d679a1bbe59ca02cacecfb011e201f5a1f"
   
@@ -1283,7 +1425,7 @@ Lockfile:
       right-align "^0.1.1"
       wordwrap "0.0.2"
   
-  cliui@^3.2.0:
+  cliui@^3.0.3, cliui@^3.2.0:
     version "3.2.0"
     resolved "https://registry.yarnpkg.com/cliui/-/cliui-3.2.0.tgz#120601537a916d29940f934da3b48d585a39213d"
     dependencies:
@@ -1379,6 +1521,10 @@ Lockfile:
   colors@1.1.2, colors@^1.1.0, colors@^1.1.2, colors@~1.1.2:
     version "1.1.2"
     resolved "https://registry.yarnpkg.com/colors/-/colors-1.1.2.tgz#168a4701756b6a7f51a12ce0c97bfa28c084ed63"
+  
+  colour@~0.7.1:
+    version "0.7.1"
+    resolved "https://registry.yarnpkg.com/colour/-/colour-0.7.1.tgz#9cb169917ec5d12c0736d3e8685746df1cadf778"
   
   combine-lists@^1.0.0:
     version "1.0.1"
@@ -1811,6 +1957,10 @@ Lockfile:
     dependencies:
       assert-plus "^1.0.0"
   
+  date-fns@^1.29.0:
+    version "1.29.0"
+    resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.29.0.tgz#12e609cdcb935127311d04d33334e2960a2a54e6"
+  
   date-now@^0.1.4:
     version "0.1.4"
     resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
@@ -2014,6 +2164,10 @@ Lockfile:
     dependencies:
       domelementtype "~1.1.1"
       entities "~1.1.1"
+  
+  dom-storage@^2.0.2:
+    version "2.0.2"
+    resolved "https://registry.yarnpkg.com/dom-storage/-/dom-storage-2.0.2.tgz#ed17cbf68abd10e0aef8182713e297c5e4b500b0"
   
   domain-browser@^1.1.1:
     version "1.1.7"
@@ -2520,15 +2674,15 @@ Lockfile:
     version "1.1.1"
     resolved "https://registry.yarnpkg.com/fastparse/-/fastparse-1.1.1.tgz#d1e2643b38a94d7583b479060e6c4affc94071f8"
   
-  faye-websocket@^0.10.0:
-    version "0.10.0"
-    resolved "https://registry.yarnpkg.com/faye-websocket/-/faye-websocket-0.10.0.tgz#4e492f8d04dfb6f89003507f6edbf2d501e7c6f4"
+  faye-websocket@0.11.1, faye-websocket@~0.11.0:
+    version "0.11.1"
+    resolved "https://registry.yarnpkg.com/faye-websocket/-/faye-websocket-0.11.1.tgz#f0efe18c4f56e4f40afc7e06c719fd5ee6188f38"
     dependencies:
       websocket-driver ">=0.5.1"
   
-  faye-websocket@~0.11.0:
-    version "0.11.1"
-    resolved "https://registry.yarnpkg.com/faye-websocket/-/faye-websocket-0.11.1.tgz#f0efe18c4f56e4f40afc7e06c719fd5ee6188f38"
+  faye-websocket@^0.10.0:
+    version "0.10.0"
+    resolved "https://registry.yarnpkg.com/faye-websocket/-/faye-websocket-0.10.0.tgz#4e492f8d04dfb6f89003507f6edbf2d501e7c6f4"
     dependencies:
       websocket-driver ">=0.5.1"
   
@@ -2624,6 +2778,20 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/find-up/-/find-up-2.1.0.tgz#45d1b7e506c717ddd482775a2b77920a3c0c57a7"
     dependencies:
       locate-path "^2.0.0"
+  
+  firebase@^4.9.1:
+    version "4.9.1"
+    resolved "https://registry.yarnpkg.com/firebase/-/firebase-4.9.1.tgz#7adda5cf05dbb9d65e316adb61e2c62abcef2586"
+    dependencies:
+      "@firebase/app" "0.1.8"
+      "@firebase/auth" "0.3.3"
+      "@firebase/database" "0.1.9"
+      "@firebase/firestore" "0.3.2"
+      "@firebase/messaging" "0.1.9"
+      "@firebase/polyfill" "0.1.4"
+      "@firebase/storage" "0.1.6"
+      dom-storage "^2.0.2"
+      xmlhttprequest "^1.8.0"
   
   first-chunk-stream@^1.0.0:
     version "1.0.0"
@@ -2952,6 +3120,15 @@ Lockfile:
   graceful-fs@^4.0.0, graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.3, graceful-fs@^4.1.6:
     version "4.1.11"
     resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
+  
+  grpc@^1.7.1:
+    version "1.9.0"
+    resolved "https://registry.yarnpkg.com/grpc/-/grpc-1.9.0.tgz#99ca91c7dddc158da1d7edc4f7e09971a8b68a84"
+    dependencies:
+      lodash "^4.17.5"
+      nan "^2.0.0"
+      node-pre-gyp "^0.6.39"
+      protobufjs "^5.0.0"
   
   gulp-inline-ng2-template@^4.0.0:
     version "4.0.0"
@@ -4185,6 +4362,10 @@ Lockfile:
     version "4.17.4"
     resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
   
+  lodash@^4.17.5:
+    version "4.17.5"
+    resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.5.tgz#99a92d65c0272debe8c96b6057bc8fbfa3bed511"
+  
   log4js@^0.6.31:
     version "0.6.38"
     resolved "https://registry.yarnpkg.com/log4js/-/log4js-0.6.38.tgz#2c494116695d6fb25480943d3fc872e662a522fd"
@@ -4195,6 +4376,10 @@ Lockfile:
   loglevel@^1.4.1:
     version "1.5.1"
     resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.5.1.tgz#189078c94ab9053ee215a0acdbf24244ea0f6502"
+  
+  long@~3:
+    version "3.2.0"
+    resolved "https://registry.yarnpkg.com/long/-/long-3.2.0.tgz#d821b7138ca1cb581c172990ef14db200b5c474b"
   
   longest@^1.0.1:
     version "1.0.1"
@@ -4493,6 +4678,10 @@ Lockfile:
     dependencies:
       duplexer2 "0.0.2"
   
+  nan@^2.0.0:
+    version "2.8.0"
+    resolved "https://registry.yarnpkg.com/nan/-/nan-2.8.0.tgz#ed715f3fe9de02b57a5e6252d90a96675e1f085a"
+  
   nan@^2.3.0, nan@^2.3.2:
     version "2.7.0"
     resolved "https://registry.yarnpkg.com/nan/-/nan-2.7.0.tgz#d95bf721ec877e08db276ed3fc6eb78f9083ad46"
@@ -4624,7 +4813,7 @@ Lockfile:
     version "1.0.1"
     resolved "https://registry.yarnpkg.com/node-modules-path/-/node-modules-path-1.0.1.tgz#40096b08ce7ad0ea14680863af449c7c75a5d1c8"
   
-  node-pre-gyp@^0.6.36:
+  node-pre-gyp@^0.6.36, node-pre-gyp@^0.6.39:
     version "0.6.39"
     resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.6.39.tgz#c00e96860b23c0e1420ac7befc5044e1d78d8649"
     dependencies:
@@ -4830,6 +5019,10 @@ Lockfile:
   options@>=0.0.5:
     version "0.0.6"
     resolved "https://registry.yarnpkg.com/options/-/options-0.0.6.tgz#ec22d312806bb53e731773e7cdaefcf1c643128f"
+  
+  optjs@~3.2.2:
+    version "3.2.2"
+    resolved "https://registry.yarnpkg.com/optjs/-/optjs-3.2.2.tgz#69a6ce89c442a44403141ad2f9b370bd5bb6f4ee"
   
   ordered-read-streams@^0.3.0:
     version "0.3.0"
@@ -5402,11 +5595,24 @@ Lockfile:
     version "1.0.1"
     resolved "https://registry.yarnpkg.com/promise-inflight/-/promise-inflight-1.0.1.tgz#98472870bf228132fcbdd868129bad12c3c029e3"
   
+  promise-polyfill@^6.0.2:
+    version "6.1.0"
+    resolved "https://registry.yarnpkg.com/promise-polyfill/-/promise-polyfill-6.1.0.tgz#dfa96943ea9c121fca4de9b5868cb39d3472e057"
+  
   promise@^7.1.1:
     version "7.3.1"
     resolved "https://registry.yarnpkg.com/promise/-/promise-7.3.1.tgz#064b72602b18f90f29192b8b1bc418ffd1ebd3bf"
     dependencies:
       asap "~2.0.3"
+  
+  protobufjs@^5.0.0:
+    version "5.0.2"
+    resolved "https://registry.yarnpkg.com/protobufjs/-/protobufjs-5.0.2.tgz#59748d7dcf03d2db22c13da9feb024e16ab80c91"
+    dependencies:
+      ascli "~1"
+      bytebuffer "~5"
+      glob "^7.0.5"
+      yargs "^3.10.0"
   
   protractor@~5.1.2:
     version "5.1.2"
@@ -5878,6 +6084,14 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/rollup-plugin-node-resolve/-/rollup-plugin-node-resolve-3.0.0.tgz#8b897c4c3030d5001277b0514b25d2ca09683ee0"
     dependencies:
       browser-resolve "^1.11.0"
+      builtin-modules "^1.1.0"
+      is-module "^1.0.0"
+      resolve "^1.1.6"
+  
+  rollup-plugin-node-resolve@^3.0.2:
+    version "3.0.2"
+    resolved "https://registry.yarnpkg.com/rollup-plugin-node-resolve/-/rollup-plugin-node-resolve-3.0.2.tgz#38babc12fd404cc2ba1ff68648fe43fa3ffee6b0"
+    dependencies:
       builtin-modules "^1.1.0"
       is-module "^1.0.0"
       resolve "^1.1.6"
@@ -6585,6 +6799,12 @@ Lockfile:
     dependencies:
       minimist "^1.1.0"
   
+  subcommander@^1.0.0:
+    version "1.0.0"
+    resolved "https://registry.yarnpkg.com/subcommander/-/subcommander-1.0.0.tgz#057ca353802fafb354e83ab940c81b73562e5028"
+    dependencies:
+      chalk "^1.1.3"
+  
   supports-color@^2.0.0:
     version "2.0.0"
     resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-2.0.0.tgz#535d045ce6b6363fa40117084629995e9df324c7"
@@ -6883,13 +7103,13 @@ Lockfile:
     version "0.0.6"
     resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   
-  typescript@^2.0.0:
-    version "2.6.2"
-    resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.6.2.tgz#3c5b6fd7f6de0914269027f03c0946758f7673a4"
-  
   typescript@^2.3.3, typescript@^2.3.4:
     version "2.6.1"
     resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.6.1.tgz#ef39cdea27abac0b500242d6726ab90e0c846631"
+  
+  typescript@^2.7.0:
+    version "2.7.1"
+    resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.7.1.tgz#bb3682c2c791ac90e7c6210b26478a8da085c359"
   
   typical@^2.6.1:
     version "2.6.1"
@@ -7395,6 +7615,10 @@ Lockfile:
     version "0.1.0"
     resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
   
+  window-size@^0.1.4:
+    version "0.1.4"
+    resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.4.tgz#f8e1aa1ee5a53ec5bf151ffa09742a6ad7697876"
+  
   wordwrap@0.0.2:
     version "0.0.2"
     resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-0.0.2.tgz#b79669bb42ecb409f83d583cad52ca17eaa1643f"
@@ -7469,11 +7693,15 @@ Lockfile:
     version "1.5.3"
     resolved "https://registry.yarnpkg.com/xmlhttprequest-ssl/-/xmlhttprequest-ssl-1.5.3.tgz#185a888c04eca46c3e4070d99f7b49de3528992d"
   
+  xmlhttprequest@^1.8.0:
+    version "1.8.0"
+    resolved "https://registry.yarnpkg.com/xmlhttprequest/-/xmlhttprequest-1.8.0.tgz#67fe075c5c24fef39f9d65f5f7b7fe75171968fc"
+  
   "xtend@>=4.0.0 <4.1.0-0", xtend@^4.0.0, xtend@^4.0.1, xtend@~4.0.0, xtend@~4.0.1:
     version "4.0.1"
     resolved "https://registry.yarnpkg.com/xtend/-/xtend-4.0.1.tgz#a5c6d532be656e23db820efb943a1f04998d63af"
   
-  y18n@^3.2.1:
+  y18n@^3.2.0, y18n@^3.2.1:
     version "3.2.1"
     resolved "https://registry.yarnpkg.com/y18n/-/y18n-3.2.1.tgz#6d15fba884c08679c0d77e88e7759e811e07fa41"
   
@@ -7498,6 +7726,18 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-7.0.0.tgz#8d0ac42f16ea55debd332caf4c4038b3e3f5dfd9"
     dependencies:
       camelcase "^4.1.0"
+  
+  yargs@^3.10.0:
+    version "3.32.0"
+    resolved "https://registry.yarnpkg.com/yargs/-/yargs-3.32.0.tgz#03088e9ebf9e756b69751611d2a5ef591482c995"
+    dependencies:
+      camelcase "^2.0.1"
+      cliui "^3.0.3"
+      decamelize "^1.1.1"
+      os-locale "^1.4.0"
+      string-width "^1.0.1"
+      window-size "^0.1.4"
+      y18n "^3.2.0"
   
   yargs@^6.6.0:
     version "6.6.0"
@@ -7575,8 +7815,14 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/zone.js/-/zone.js-0.8.18.tgz#8cecb3977fcd1b3090562ff4570e2847e752b48d"
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@angular-devkit%2fcore: ETIMEDOUT
-      at Timeout._onTimeout (/usr/local/lib/node_modules/yarn/lib/cli.js:118034:19)
-      at ontimeout (timers.js:475:11)
-      at tryOnTimeout (timers.js:310:5)
-      at Timer.listOnTimeout (timers.js:270:5)
+  Error: Command "build" not found.
+      at new MessageError (/usr/share/yarn/lib/cli.js:186:110)
+      at /usr/share/yarn/lib/cli.js:87307:17
+      at Generator.next (<anonymous>)
+      at step (/usr/share/yarn/lib/cli.js:98:30)
+      at /usr/share/yarn/lib/cli.js:116:14
+      at new Promise (<anonymous>)
+      at new F (/usr/share/yarn/lib/cli.js:23451:28)
+      at /usr/share/yarn/lib/cli.js:95:12
+      at runCommand (/usr/share/yarn/lib/cli.js:87312:22)
+      at Object.<anonymous> (/usr/share/yarn/lib/cli.js:87412:14)

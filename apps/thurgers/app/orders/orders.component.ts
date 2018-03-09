@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { first, map, shareReplay } from 'rxjs/operators';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import { AngularFirestore, AngularFirestoreCollection, DocumentChangeAction } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import { Thurger } from './thuger';
@@ -19,6 +20,13 @@ function snapshotChangesId<T>(items: DocumentChangeAction[]): any  {
 @Component({
   selector: 'app-orders',
   templateUrl: 'orders.component.html',
+  styles: [`
+    .side {
+      display: inline-block;
+      width: 400px;
+    }
+
+  `]
 })
 export class OrdersComponent implements OnInit {
 
@@ -27,6 +35,7 @@ export class OrdersComponent implements OnInit {
     private afAuth: AngularFireAuth,
   ) { }
 
+  timer$: Observable<Date>;
   user$: Observable<User>;
 
   thurgersRef: AngularFirestoreCollection<Thurger>;
@@ -39,6 +48,7 @@ export class OrdersComponent implements OnInit {
   ngOnInit() {
     this.thurgersRef = this.afs.collection<Thurger>('thurgers', ref => ref.orderBy('addedAt', 'desc'));
     this.user$ = this.afAuth.authState;
+    this.timer$ = timer(0, 1000).pipe(map(i => new Date()), shareReplay());
 
     this.thurgerIds$ = this.thurgersRef.snapshotChanges()
       .map(thurgers => snapshotChangesId<Thurger>(thurgers))
@@ -70,15 +80,14 @@ export class OrdersComponent implements OnInit {
         return count;
       });
 
-    this.thurgers$ = this.thurgerIds$
-      .map(thurgers => thurgers.sort((a, b) => new Date(a.addedAt).getTime() - new Date(b.addedAt).getTime()));
+    this.thurgers$ = combineLatest(this.timer$, this.thurgerIds$, (time, thurgers) => thurgers);
 
     const thursday = 4;
 
     this.thurgerTime$ = timer(0, 1000).pipe(
       map(i => {
         let target = new Date();
-        target.setHours(12, 0, 0, 0);
+        target.setHours(11, 45, 0, 0);
         const day = target.getDay();
 
         if (day > thursday) {
@@ -97,6 +106,10 @@ export class OrdersComponent implements OnInit {
     );
   }
 
+  canEdit(orderId: string, uid: string) {
+    return orderId === uid || uid === 'hjUMEPIPaZOgvCiC5o68NlFyJ4b2';
+  }
+
   getTimeRemaining(endtime: Date) {
     const t = endtime.getTime() - new Date().getTime();
     const seconds = Math.floor((t / 1000) % 60);
@@ -109,7 +122,7 @@ export class OrdersComponent implements OnInit {
       'minutes': minutes,
       'seconds': seconds
     };
-}
+  }
 
   trackById(idx: number, item: any) {
     return item['id'];
@@ -123,14 +136,14 @@ export class OrdersComponent implements OnInit {
     });
   }
 
-  add(email: string) {
+  add(userId: string, email: string) {
     this.thurgersRef.add({
       email,
+      userId,
       choice: null,
       extras: null,
       addedAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-
     });
   }
 

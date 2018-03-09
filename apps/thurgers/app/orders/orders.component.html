@@ -18,16 +18,18 @@
     <h2>What do you want?</h2>
   </div>
   <ng-container *ngIf="user$ | async as user">
-    <button mat-raised-button color="primary" (click)="add(user.email)">Add Order</button>
+    <button mat-raised-button color="primary" (click)="add(user.uid, user.email)">Add Order</button>
     <div *ngFor="let order of thurgers$ | async as thurger; trackBy: trackById">
-      {{order.email}}
-      <button mat-raised-button [disabled]="order.email !== user.email" [color]="order.choice === 'Beef' ? 'primary' : ''" (click)="update(order.id, 'Beef', extras.value)" >Beef</button>
-      <button mat-raised-button [disabled]="order.email !== user.email" [color]="order.choice === 'Chicken' ? 'primary' : ''" (click)="update(order.id, 'Chicken', extras.value)" >Chicken</button>
-      <button mat-raised-button [disabled]="order.email !== user.email" color="warn" (click)="remove(order.id)" >Remove</button>
-      <mat-form-field>
-        <input matInput [disabled]="order.email !== user.email" placeholder="Extras" #extras [value]="order.extras" (keyup)="update(order.id, order.choice, extras.value)" />
-      </mat-form-field>
-      Last Edited: {{order.addedAt}} ago
+      <span class="side">{{user.email}}</span>
+      <span class="fixed">
+        <button mat-raised-button [disabled]="!canEdit(order.userId, user.uid)" [color]="order.choice === 'Beef' ? 'primary' : ''" (click)="update(order.id, 'Beef', extras.value)" >Beef</button>
+        <button mat-raised-button [disabled]="!canEdit(order.userId, user.uid)" [color]="order.choice === 'Chicken' ? 'primary' : ''" (click)="update(order.id, 'Chicken', extras.value)" >Chicken</button>
+        <button mat-raised-button [disabled]="!canEdit(order.userId, user.uid)" color="warn" (click)="remove(order.id)" >Remove</button>
+        <mat-form-field>
+          <input matInput [disabled]="order.userId !== user.uid" placeholder="Extras" #extras [value]="order.extras" (keyup)="update(order.id, order.choice, extras.value)" />
+        </mat-form-field>
+      </span>
+      <span class="side">{{order.addedAt}} ago</span>
     </div>
   </ng-container>
 </div>

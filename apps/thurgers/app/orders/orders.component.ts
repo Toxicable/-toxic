@@ -1,13 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { first, map, shareReplay } from 'rxjs/operators';
+import { first, map, shareReplay, take, concatMap, tap } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/observable/combineLatest';
-import { AngularFirestore, AngularFirestoreCollection, DocumentChangeAction } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreCollection, DocumentChangeAction, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import { Thurger } from './thuger';
 import { timer } from 'rxjs/observable/timer';
 import { addDays, distanceInWordsToNow } from 'date-fns';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { User } from '@firebase/auth-types';
+import { of } from 'rxjs/observable/of';
+
+export interface Settings {
+  disable: boolean;
+}
 
 function snapshotChangesId<T>(items: DocumentChangeAction[]): any  {
   return items.map(a => {
@@ -23,9 +28,8 @@ function snapshotChangesId<T>(items: DocumentChangeAction[]): any  {
   styles: [`
     .side {
       display: inline-block;
-      width: 400px;
+      width: 250px;
     }
-
   `]
 })
 export class OrdersComponent implements OnInit {
@@ -35,18 +39,29 @@ export class OrdersComponent implements OnInit {
     private afAuth: AngularFireAuth,
   ) { }
 
+  settingsRef: AngularFirestoreDocument<Settings>;
+  thurgersRef: AngularFirestoreCollection<Thurger>;
+
   timer$: Observable<Date>;
   user$: Observable<User>;
 
-  thurgersRef: AngularFirestoreCollection<Thurger>;
   thurgers$: Observable<Thurger[]>;
   thurgerTime$: Observable<string>;
   counts$: Observable<{ Chicken: number; Beef: number }>;
-
   thurgerIds$: Observable<Thurger[]>;
+  settings: Settings;
+
+  cutOffRl(email: string) {
+    return email.replace(atob('QHJvY2tldGxhYi5jby5ueg=='), '');
+  }
 
   ngOnInit() {
     this.thurgersRef = this.afs.collection<Thurger>('thurgers', ref => ref.orderBy('addedAt', 'desc'));
+    this.settingsRef = this.afs.doc('settings/1');
+    this.settingsRef.valueChanges().subscribe(s => this.settings = s);
+
+    window['disableItYo'] = () => this.settingsRef.update({disable: true});
+
     this.user$ = this.afAuth.authState;
     this.timer$ = timer(0, 1000).pipe(map(i => new Date()), shareReplay());
 
@@ -58,9 +73,7 @@ export class OrdersComponent implements OnInit {
           return t;
         });
       })
-      .pipe(
-        shareReplay()
-      );
+      .pipe(shareReplay());
 
 
     this.counts$ = this.thurgerIds$
@@ -80,11 +93,11 @@ export class OrdersComponent implements OnInit {
         return count;
       });
 
-    this.thurgers$ = combineLatest(this.timer$, this.thurgerIds$, (time, thurgers) => thurgers);
+    this.thurgers$ = combineLatest(this.timer$, this.thurgerIds$, (time, thurgers) => thurgers).pipe(tap(a => console.log));
 
     const thursday = 4;
 
-    this.thurgerTime$ = timer(0, 1000).pipe(
+    this.thurgerTime$ = this.timer$.pipe(
       map(i => {
         let target = new Date();
         target.setHours(11, 45, 0, 0);
@@ -107,7 +120,7 @@ export class OrdersComponent implements OnInit {
   }
 
   canEdit(orderId: string, uid: string) {
-    return orderId === uid || uid === 'hjUMEPIPaZOgvCiC5o68NlFyJ4b2';
+    return orderId === uid;
   }
 
   getTimeRemaining(endtime: Date) {
@@ -128,7 +141,10 @@ export class OrdersComponent implements OnInit {
     return item['id'];
   }
 
-  update(id: string, choice: 'Chicken' | 'Beef', extras: string) {
+  update(id: string, choice: 'Chicken' | 'Beef', extras: string, canEdit: boolean) {
+    if (!canEdit || this.settings.disable) {
+      return;
+    }
     this.thurgersRef.doc(id).update({
       choice,
       extras,
@@ -137,17 +153,28 @@ export class OrdersComponent implements OnInit {
   }
 
   add(userId: string, email: string) {
-    this.thurgersRef.add({
-      email,
-      userId,
-      choice: null,
-      extras: null,
-      addedAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    });
+    if (this.settings.disable) {
+      return;
+    }
+    this.afs.collection<Thurger>('thurgers').valueChanges().pipe(take(1), tap(thurgers => {
+      const existing = thurgers.find(t => t.email === email);
+      if (!existing) {
+        this.thurgersRef.add({
+          email,
+          userId,
+          choice: null,
+          extras: null,
+          addedAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        });
+      }
+    })).subscribe();
   }
 
   remove(id: string) {
+    if (this.settings.disable) {
+      return;
+    }
     return this.thurgersRef.doc(id).delete();
   }
 }

@@ -12,26 +12,34 @@ import * as firebase from 'firebase/app';
   template: `
     <h1>Login</h1>
     <button (click)="login()" mat-raised-button color="primary" >Login</button>
-    <div>{{errorMessage}}</div>
+    <div *ngIf="error">
+      <p>You signed in with the wrong account. It must be one of ours. </p>
+      <p>
+        Visit here https://myaccount.google.com/permissions?pli=1
+        to remove Thurgers if the popup dosen't give you a chance to pick another email need be
+      </p>
+    </div>
   `
 })
 
 export class LoginComponent {
-  errorMessage: string;
+  error: boolean;
 
   constructor(private readonly afAuth: AngularFireAuth, private readonly router: Router, private cdr: ChangeDetectorRef) {
   }
 
   login() {
+    this.error = false;
     this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
     .then(state => {
-        if ((state.user.email as string).endsWith('@rocketlab.co.nz')) {
-          this.router.navigateByUrl('/');
-        } else {
-          this.errorMessage = 'You signed in with the wrong account. It must be one of ours';
-          this.afAuth.auth.signOut();
-          this.cdr.detectChanges();
-        }
-      });
+      const email = atob('QHJvY2tldGxhYi5jby5ueg==');
+      if ((state.user.email as string).endsWith(email)) {
+        this.router.navigateByUrl('/');
+      } else {
+        this.error = true;
+        this.afAuth.auth.signOut();
+        this.cdr.detectChanges();
+      }
+    });
   }
 }

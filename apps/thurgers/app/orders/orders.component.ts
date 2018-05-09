@@ -85,7 +85,7 @@ export class OrdersComponent implements OnInit {
         };
         thurgers.forEach(t => {
           if (t.extras) {
-            count.Other.push(`${t.choice} + ${t.extras}`);
+            count.Other.push(`${t.choice} + ${t.extras}`).sort();
           } else {
             count[t.choice] += 1;
           }
